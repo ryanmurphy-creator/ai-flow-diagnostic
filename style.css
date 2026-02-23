@@ -699,8 +699,8 @@ body {
   }
 }
 
-/* --- Mobile (768px and below) --- */
-@media (max-width: 768px) {
+/* --- Mobile (900px and below) --- */
+@media (max-width: 900px) {
 
   /* Header: smaller, compact */
   .site-header {
@@ -719,29 +719,42 @@ body {
 
   /* Main layout: single column, chart first, left panel below */
   .main-layout {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    overflow: visible;
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
-  /* Chart appears first (top) */
+  /* Chart appears first (top), zero gap from header */
   .chart-section {
-    order: -1;
-    padding: 8px 16px 4px 16px;
+    order: -1 !important;
+    padding: 0 4px !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: 80vw;
+    display: block !important;
+    align-items: unset !important;
+    justify-content: unset !important;
   }
 
-  /* Chart fills available width */
+  /* Chart fills available width, height driven by aspect ratio */
   .chart-wrapper {
     max-width: 100% !important;
     width: 100% !important;
     height: auto !important;
+    min-height: unset !important;
+    display: block !important;
+    align-items: unset !important;
+    justify-content: unset !important;
   }
 
+  /* SVG: width-driven, height auto from viewBox aspect ratio */
   .flow-chart {
     width: 100% !important;
     height: auto !important;
-    display: block;
+    max-width: none !important;
+    max-height: none !important;
+    display: block !important;
   }
 
   /* Left panel (intro + input) appears below chart */
@@ -774,21 +787,19 @@ body {
     box-shadow: 3px 3px 0px 0px #EE4413;
   }
 
-  /* Zone labels: larger on mobile */
+  /* Zone labels: scaled up for mobile readability */
   .zone-label {
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 22px !important;
+    font-weight: 700 !important;
   }
 
   .zone-sublabel {
-    font-size: 11px;
+    font-size: 14px !important;
   }
 
-  /* Axis labels (SVG text elements in axisLayer): scaled on mobile.
-     SVG inline font-size attributes are presentation attributes;
-     CSS font-size with !important overrides them. */
+  /* Axis labels (SVG inline attributes overridden with !important) */
   #axisLayer text {
-    font-size: 10px !important;
+    font-size: 12px !important;
   }
 
   /* Zone hover card on mobile: full centered modal overlay */

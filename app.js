@@ -77,8 +77,8 @@ let isMinimized = false;
 let isDragging = false;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
-let isDesktop = () => window.innerWidth > 768;
-let isMobile = () => window.innerWidth <= 768;
+let isDesktop = () => window.innerWidth > 900;
+let isMobile = () => window.innerWidth <= 900;
 
 // --- DOM Refs ---
 const inputWindow = document.getElementById('inputWindow');
