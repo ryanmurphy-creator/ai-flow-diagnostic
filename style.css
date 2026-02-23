@@ -1,0 +1,823 @@
+/* ===========================
+   AI Flow Diagnostic — Styles
+   =========================== */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --orange: #EE4413;
+  --border-orange: 2px solid #EE4413;
+  --black: #111111;
+  --white: #ffffff;
+  --gray: #888888;
+  --light-gray: #e8e8e8;
+  --border: 2px solid var(--black);
+  --border-orange: 2px solid var(--orange);
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--white);
+  color: var(--black);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* --- Header --- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border: 2px solid #EE4413;
+  background: white;
+  box-shadow: 5px 5px 0px 0px #EE4413;
+  margin: 20px 20px 0 20px;
+}
+
+.site-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0;
+}
+
+.info-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--orange);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: opacity 0.15s;
+}
+
+.info-btn:hover {
+  opacity: 0.65;
+}
+
+/* --- Main Layout --- */
+.main-layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 0;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+/* --- Left Panel --- */
+.left-panel {
+  padding: 32px 24px;
+  border-right: var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+}
+
+.intro-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--black);
+}
+
+/* --- Window (Retro '90s Chrome) --- */
+.window {
+  border: 2px solid #EE4413;
+  box-shadow: 5px 5px 0px 0px #EE4413;
+  background: var(--white);
+  position: relative;
+  user-select: none;
+}
+
+.window-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  border-bottom: 1px solid #EE4413;
+  padding: 6px 10px;
+  cursor: grab;
+}
+
+.window-titlebar:active {
+  cursor: grabbing;
+}
+
+.window-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--orange);
+}
+
+.window-minimize {
+  background: none;
+  border: 1px solid #EE4413;
+  width: 22px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  color: #EE4413;
+  padding: 0;
+  transition: background 0.1s;
+  flex-shrink: 0;
+}
+
+.window-minimize:hover {
+  background: var(--light-gray);
+}
+
+.window-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.window-body.minimized {
+  display: none;
+}
+
+.task-input {
+  width: 100%;
+  height: 250px;
+  min-height: 250px;
+  max-height: 260px;
+  resize: none;
+  border: 1px solid #EE4413;
+  padding: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--black);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.task-input:focus {
+  border-color: var(--orange);
+}
+
+.task-input::placeholder {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gray);
+}
+
+.textarea-wrapper {
+  position: relative;
+}
+
+.window-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.inline-submit-btn {
+  background: #EE4413;
+  border: none;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  line-height: 1;
+  padding: 8px 20px;
+  transition: opacity 0.15s;
+}
+
+.inline-submit-btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.inline-submit-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --- Result Card --- */
+.result-card {
+  border: 2px solid #EE4413;
+  box-shadow: 5px 5px 0px 0px #EE4413;
+  background: var(--white);
+  position: relative;
+  user-select: none;
+  animation: slideDown 0.3s ease-out;
+}
+
+.result-card-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #EE4413;
+  padding: 8px 10px 8px 12px;
+  cursor: grab;
+}
+
+.result-card-titlebar:active {
+  cursor: grabbing;
+}
+
+.result-zone-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.result-card-body {
+  padding: 16px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.result-explanation {
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.result-advice {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--gray);
+  font-style: italic;
+  margin: 0;
+}
+
+.result-close-btn {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+.result-close-btn:hover {
+  opacity: 1;
+}
+
+.result-card-footer {
+  padding: 12px 16px 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.try-another-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: #EE4413;
+  border: none;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.try-another-btn:hover {
+  opacity: 0.85;
+}
+
+/* --- Chart Section --- */
+.chart-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+  height: calc(100vh - 80px);
+  box-sizing: border-box;
+}
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flow-chart {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+/* Zone areas (invisible hit targets) */
+.zone-area {
+  fill: transparent;
+  stroke: none;
+  cursor: pointer;
+  transition: fill 0.15s;
+}
+
+.zone-area:hover {
+  fill: rgba(204, 68, 0, 0.06);
+}
+
+/* Zone labels */
+.zone-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  fill: var(--black);
+  letter-spacing: -0.01em;
+  pointer-events: none;
+}
+
+.zone-sublabel {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  fill: #999999;
+  pointer-events: none;
+}
+
+/* Axis labels (positioned HTML divs outside SVG) */
+.axis-label {
+  position: absolute;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--orange);
+  text-transform: uppercase;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.axis-label-y {
+  top: 50%;
+  left: -38px;
+  transform: translateY(-50%) rotate(-90deg);
+  transform-origin: center center;
+}
+
+.axis-label-x {
+  bottom: 16px;
+  right: 0;
+}
+
+/* --- Zone Card Backdrop (mobile only, hidden by default) --- */
+.zone-card-backdrop {
+  display: none;
+}
+
+/* --- Zone Hover Card --- */
+.zone-card {
+  position: fixed;
+  z-index: 200;
+  background: var(--white);
+  border: 2px solid #EE4413;
+  max-width: 280px;
+  min-width: 240px;
+  box-shadow: 5px 5px 0px 0px #EE4413;
+  animation: cardIn 0.15s ease-out;
+  pointer-events: none;
+}
+
+.zone-card-header {
+  background: #EE4413;
+  padding: 10px 16px;
+  border-bottom: none;
+}
+
+.zone-card-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+.zone-card-oneliner {
+  font-style: italic;
+  font-weight: 300;
+  font-size: 11px;
+  color: var(--gray);
+  padding: 16px 20px 0;
+  line-height: 1.4;
+}
+
+.zone-card-desc {
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 12px 20px 0;
+}
+
+.zone-card-example {
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 12px 20px 16px;
+  border-top: none;
+  color: #444;
+}
+
+.zone-card-example strong {
+  font-weight: 700;
+  color: var(--black);
+}
+
+/* --- Dot Tooltip --- */
+.dot-tooltip {
+  position: fixed;
+  z-index: 300;
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  padding: 6px 10px;
+  max-width: 220px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+/* --- Info Modal --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17,17,17,0.6);
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal {
+  background: var(--white);
+  border: var(--border);
+  max-width: 560px;
+  width: 100%;
+  max-height: 85vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 6px 6px 0 var(--black);
+}
+
+.modal-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: var(--border);
+  padding: 8px 14px;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--orange);
+}
+
+.modal-close {
+  background: none;
+  border: var(--border);
+  width: 28px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  background: var(--light-gray);
+}
+
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.modal-body h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--orange);
+  margin: 20px 0 10px;
+}
+
+.modal-body h2:first-child {
+  margin-top: 0;
+}
+
+.modal-body h3 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin: 14px 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.modal-body p {
+  margin-bottom: 12px;
+}
+
+.modal-body ul {
+  padding-left: 18px;
+  margin-bottom: 12px;
+}
+
+.modal-body li {
+  margin-bottom: 6px;
+}
+
+.modal-footer-note {
+  font-size: 0.78rem;
+  color: var(--gray);
+  border-top: 1px solid var(--light-gray);
+  padding-top: 14px;
+  margin-top: 16px;
+  font-style: italic;
+}
+
+/* --- Loading Overlay --- */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.85);
+  z-index: 350;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--light-gray);
+  border-top-color: var(--orange);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loading-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: var(--gray);
+  animation: flicker 1.5s step-end infinite;
+}
+
+/* --- Dot animations --- */
+@keyframes dotStamp {
+  0%   { transform: scale(0); opacity: 0; }
+  40%  { transform: scale(1.25); opacity: 1; }
+  65%  { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes dotActivePulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.15); }
+}
+
+@keyframes dotPulse {
+  0%   { r: 12; opacity: 0.5; }
+  100% { r: 32; opacity: 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Result dot SVG elements */
+.result-dot {
+  animation: dotStamp 0.6s ease-out forwards;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+/* Active dot: entrance stamp then continuous gentle pulse */
+.result-dot--active {
+  animation:
+    dotStamp 0.6s ease-out,
+    dotActivePulse 2s ease-in-out 0.6s infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.result-dot-pulse {
+  animation: dotPulse 0.9s ease-out forwards;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .left-panel {
+    border-right: none;
+    border-bottom: var(--border);
+    padding: 20px 16px;
+  }
+
+  .chart-section {
+    padding: 20px 16px;
+    order: -1;
+  }
+
+  .axis-label-y {
+    left: -32px;
+  }
+
+  /* Disable dragging on tablet/mobile */
+  .window-titlebar {
+    cursor: default;
+  }
+}
+
+/* --- Mobile (768px and below) --- */
+@media (max-width: 768px) {
+
+  /* Header: smaller, compact */
+  .site-header {
+    padding: 10px 16px;
+    margin: 10px 10px 0 10px;
+    box-shadow: 3px 3px 0px 0px #EE4413;
+  }
+
+  .site-title {
+    font-size: 18px;
+  }
+
+  .info-btn {
+    font-size: 12px;
+  }
+
+  /* Main layout: single column, chart first, left panel below */
+  .main-layout {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Chart appears first (top) */
+  .chart-section {
+    order: -1;
+    padding: 8px 16px 4px 16px;
+  }
+
+  /* Chart fills available width */
+  .chart-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .flow-chart {
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+  }
+
+  /* Left panel (intro + input) appears below chart */
+  .left-panel {
+    order: 1;
+    padding: 16px 16px;
+    border-right: none;
+    border-bottom: none;
+    border-top: var(--border);
+    gap: 16px;
+  }
+
+  /* Input window: not draggable, full width, fixed in flow */
+  .window {
+    position: static !important;
+    width: 100% !important;
+    left: auto !important;
+    top: auto !important;
+    z-index: auto !important;
+    box-shadow: 3px 3px 0px 0px #EE4413;
+  }
+
+  /* Result card: not draggable, full width */
+  .result-card {
+    position: static !important;
+    width: 100% !important;
+    left: auto !important;
+    top: auto !important;
+    z-index: auto !important;
+    box-shadow: 3px 3px 0px 0px #EE4413;
+  }
+
+  /* Zone labels: larger on mobile */
+  .zone-label {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .zone-sublabel {
+    font-size: 11px;
+  }
+
+  /* Axis labels (SVG text elements in axisLayer): scaled on mobile.
+     SVG inline font-size attributes are presentation attributes;
+     CSS font-size with !important overrides them. */
+  #axisLayer text {
+    font-size: 10px !important;
+  }
+
+  /* Zone hover card on mobile: full centered modal overlay */
+  .zone-card {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    max-width: calc(100vw - 48px) !important;
+    min-width: 260px;
+    z-index: 500;
+    pointer-events: auto;
+  }
+
+  /* Semi-transparent backdrop for mobile zone card */
+  .zone-card-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 499;
+  }
+
+  /* Prevent horizontal overflow */
+  body {
+    overflow-x: hidden;
+  }
+
+  .main-layout {
+    overflow-x: hidden;
+  }
+}

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Should I Build? — AI Flow Diagnostic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Serif+4:wght@400;600&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <h1 class="site-title">WHAT SHOULD I BUILD?</h1>
+    <button class="info-btn" id="infoBtn" aria-label="Info">INFO</button>
+  </header>
+
+  <!-- Main layout -->
+  <main class="main-layout">
+
+    <!-- Left: Intro + Input Window -->
+    <aside class="left-panel">
+      <p class="intro-text">Not every AI project is worth your time. Some will feel like magic, others will frustrate your day away.</p>
+      <p class="intro-text">Psychologist Mihaly Csikszentmihalyi found that Flow happens when challenge matches ability. This tool applies that principle to AI: it maps your task's complexity against AI's actual capability. When both are high, you get creative partnership. When they're mismatched, you get frustration, wasted time, or autopilot work.</p>
+
+      <!-- Draggable input window -->
+      <div class="window" id="inputWindow">
+        <div class="window-titlebar" id="windowTitlebar">
+          <span class="window-title">DESCRIBE YOUR PROBLEM</span>
+          <button class="window-minimize" id="minimizeBtn" aria-label="Minimize">—</button>
+        </div>
+        <div class="window-body" id="windowBody">
+          <div class="textarea-wrapper">
+            <textarea
+              id="taskInput"
+              class="task-input"
+              placeholder="e.g., I want to use AI to design my investor pitch deck"
+              rows="6"
+              maxlength="1000"
+            ></textarea>
+          </div>
+          <div class="window-footer">
+            <button class="inline-submit-btn" id="submitBtn" aria-label="Submit">EVALUATE →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result card -->
+      <div class="result-card" id="resultCard" style="display:none">
+        <div class="result-card-titlebar" id="resultCardTitlebar">
+          <span class="result-zone-name" id="resultZoneName"></span>
+          <button class="result-close-btn" id="resultCloseBtn" aria-label="Close">×</button>
+        </div>
+        <div class="result-card-body">
+          <p class="result-explanation" id="resultExplanation"></p>
+          <p class="result-advice" id="resultAdvice"></p>
+        </div>
+        <div class="result-card-footer">
+          <button class="try-another-btn" id="tryAnotherBtn">TRY ANOTHER →</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right: Chart -->
+    <section class="chart-section">
+      <div class="chart-wrapper">
+
+        <!--
+          viewBox: 0 0 700 600
+          Center: cx=350, cy=300
+          Spoke length: 160px
+
+          Spoke endpoints (cx + 160*cos(a), cy - 160*sin(a)):
+            Cruise Mode   20°: 500, 245
+            AI Flow       50°: 453, 177
+            Jagged Frontier 75°: 391, 145
+            Surprisingly Poor 110°: 295, 150
+            Stuck Spinning 145°: 219, 208
+            Waste of Time 215°: 219, 392
+            Comfort Zone  250°: 295, 450
+            Easy Wins     320°: 473, 403
+          X-axis (0°) tip: 510, 300
+          Y-axis (90°) tip: 350, 140
+        -->
+        <svg id="flowChart" class="flow-chart" viewBox="-250 -210 1160 1080" preserveAspectRatio="xMidYMid meet">
+
+          <!-- ═══ AXIS LAYER (behind everything) ═══ -->
+          <defs>
+            <!-- Clip wedges to full radial line length: 420px -->
+            <clipPath id="wedgeClip">
+              <circle cx="350" cy="300" r="420"/>
+            </clipPath>
+          </defs>
+
+          <g id="axisLayer">
+            <!-- Vertical axis: top level with topmost radial line endpoint (y=-88) -->
+            <line x1="-128" y1="778" x2="-128" y2="-88" stroke="#999999" stroke-width="2"/>
+
+            <!-- V arrow at TOP of vertical axis, pointing UP — tip at (-128, -88) -->
+            <polyline points="-134,-82 -128,-88 -122,-82" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- Horizontal axis -->
+            <line x1="-128" y1="778" x2="755" y2="778" stroke="#999999" stroke-width="2"/>
+
+            <!-- V arrow at RIGHT of horizontal axis, pointing RIGHT — tip at (755, 778) -->
+            <polyline points="749,772 755,778 749,784" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- HIGH COMPLEXITY: last letter 'Y' at top of axis (y=-88), text reads bottom-to-top -->
+            <text transform="rotate(-90,-148,-88)" x="-148" y="-88"
+              text-anchor="end" dominant-baseline="middle"
+              font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#999999" letter-spacing="1">HIGH COMPLEXITY</text>
+
+            <!-- LOW COMPLEXITY: first letter 'L' at bottom of axis (y=778), text reads bottom-to-top -->
+            <text transform="rotate(-90,-148,778)" x="-148" y="778"
+              text-anchor="start" dominant-baseline="middle"
+              font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#999999" letter-spacing="1">LOW COMPLEXITY</text>
+
+            <!-- LOW AI CAPABILITY: below horizontal axis, near origin -->
+            <text x="-128" y="806" text-anchor="start"
+              font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#999999" letter-spacing="1">LOW AI CAPABILITY</text>
+
+            <!-- HIGH AI CAPABILITY: below horizontal axis, far right -->
+            <text x="755" y="806" text-anchor="end"
+              font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#999999" letter-spacing="1">HIGH AI CAPABILITY</text>
+          </g>
+          <!-- ═══ END AXIS LAYER ═══ -->
+
+          <!-- 4 full lines through center (350,300), radius 420px, rotated 22.5° clockwise -->
+          <!-- Angles: 22.5°, 67.5°, 112.5°, 157.5° (and their 180° opposites) -->
+          <!-- cos/sin values: 22.5°=(0.9239,0.3827), 67.5°=(0.3827,0.9239) -->
+
+          <!-- Line 1: 22.5° / 202.5° → dx=388, dy=161 -->
+          <line x1="-38" y1="461" x2="738" y2="139" stroke="#EE4413" stroke-width="1.5"/>
+
+          <!-- Line 2: 67.5° / 247.5° → dx=161, dy=388 -->
+          <line x1="189" y1="688" x2="511" y2="-88" stroke="#EE4413" stroke-width="1.5"/>
+
+          <!-- Line 3: 112.5° / 292.5° → dx=-161, dy=388 -->
+          <line x1="511" y1="688" x2="189" y2="-88" stroke="#EE4413" stroke-width="1.5"/>
+
+          <!-- Line 4: 157.5° / 337.5° → dx=-388, dy=161 -->
+          <line x1="738" y1="461" x2="-38" y2="139" stroke="#EE4413" stroke-width="1.5"/>
+
+          <!--
+            Hover wedges: lines at 22.5°,67.5°,112.5°,157.5° (and opposites).
+            Center (350,300). Each wedge = triangle from center to two far boundary points (r=900).
+            Boundary directions (SVG coords, y-down):
+              22.5°:  (+831, -344) and (-831, +344) from center
+              67.5°:  (+344, -831) and (-344, +831)
+              112.5°: (-344, -831) and (+344, +831)
+              157.5°: (-831, -344) and (+831, +344)
+            Actual points = center + offset:
+              22.5° far:  (1181, -44)  opp: (-481, 644)
+              67.5° far:  (694, -531)  opp: (6, 1131)
+              112.5° far: (6, -531)    opp: (694, 1131)
+              157.5° far: (-481, -44)  opp: (1181, 644)
+          -->
+
+          <!-- Hover wedges clipped to 60% of radius (252px) via clipPath -->
+          <!-- Cruise Mode: between 22.5° and 337.5° — right wedge -->
+          <path class="zone-area" clip-path="url(#wedgeClip)" d="M350,300 L1181,-44 L1250,300 L1181,644 Z" data-zone="Cruise Mode"/>
+
+          <!-- AI Flow: between 22.5° and 67.5° — upper-right wedge -->
+          <path class="zone-area" clip-path="url(#wedgeClip)" d="M350,300 L1181,-44 L694,-531 Z" data-zone="AI Flow"/>
+
+          <!-- Jagged Frontier: between 67.5° and 112.5° — top wedge -->
+          <path class="zone-area" clip-path="url(#wedgeClip)" d="M350,300 L694,-531 L350,-900 L6,-531 Z" data-zone="Jagged Frontier"/>
+
+          <!-- Surprisingly Poor: between 112.5° and 157.5° — upper-left wedge -->
+          <path class="zone-area" clip-path="url(#wedgeClip)" d="M350,300 L6,-531 L-481,-44 Z" data-zone="Surprisingly Poor"/>
+
+          <!-- Stuck Spinning: between 157.5° and 202.5° — left wedge -->
+          <path class="zone-area" clip-path="url(#wedgeClip)" d="M350,300 L-481,-44 L-550,300 L-481,644 Z" data-zone="Stuck Spinning"/>
+
+          <!-- Waste of Time: between 202.5° and 247.5° — lower-left wedge -->
+          <path class="zone-area" clip-path="url(#wedgeClip)" d="M350,300 L-481,644 L6,1131 Z" data-zone="Waste of Time"/>
+
+          <!-- Comfort Zone: between 247.5° and 292.5° — bottom wedge -->
+          <path class="zone-area" clip-path="url(#wedgeClip)" d="M350,300 L6,1131 L350,1200 L694,1131 Z" data-zone="Comfort Zone"/>
+
+          <!-- Easy Wins: between 292.5° and 337.5° — lower-right wedge -->
+          <path class="zone-area" clip-path="url(#wedgeClip)" d="M350,300 L694,1131 L1181,644 Z" data-zone="Easy Wins"/>
+
+          <!-- Zone labels: center=(350,300), label radius=330px (78% of 420px) -->
+          <!-- Midpoint angles: Jagged=90°, AIFlow=45°, Cruise=0°, EasyWins=315°, Comfort=270°, Waste=225°, Stuck=180°, SurpPoor=135° -->
+          <!-- x = 350 + 330·cos(θ),  y = 300 - 330·sin(θ),  using SVG y-down convention -->
+
+          <!-- Jagged Frontier: 90° → (350, -30) -->
+          <!-- Zone labels: radius 280px (15% closer than 330px), center=(350,300) -->
+          <!-- Jagged Frontier: 90° → (350, 20) -->
+          <text class="zone-label" x="350" y="7" text-anchor="middle">
+            <tspan x="350" dy="0">Jagged</tspan>
+            <tspan x="350" dy="26">Frontier</tspan>
+          </text>
+          <text class="zone-sublabel" x="350" y="63" text-anchor="middle">
+            <tspan x="350" dy="0">Excited, will this</tspan>
+            <tspan x="350" dy="18">actually work?</tspan>
+          </text>
+
+          <!-- AI Flow: 45° → (548, 102) -->
+          <text class="zone-label" x="548" y="89" text-anchor="middle">
+            <tspan x="548" dy="0">AI</tspan>
+            <tspan x="548" dy="26">Flow</tspan>
+          </text>
+          <text class="zone-sublabel" x="548" y="145" text-anchor="middle">
+            <tspan x="548" dy="0">Absorbed, creative</tspan>
+            <tspan x="548" dy="18">partnership</tspan>
+          </text>
+
+          <!-- Cruise Mode: 0° → (630, 300) -->
+          <text class="zone-label" x="630" y="287" text-anchor="middle">
+            <tspan x="630" dy="0">Cruise</tspan>
+            <tspan x="630" dy="26">Mode</tspan>
+          </text>
+          <text class="zone-sublabel" x="630" y="343" text-anchor="middle">
+            <tspan x="630" dy="0">Useful, running</tspan>
+            <tspan x="630" dy="18">on autopilot</tspan>
+          </text>
+
+          <!-- Easy Wins: 315° → (548, 498) -->
+          <text class="zone-label" x="548" y="485" text-anchor="middle">
+            <tspan x="548" dy="0">Easy</tspan>
+            <tspan x="548" dy="26">Wins</tspan>
+          </text>
+          <text class="zone-sublabel" x="548" y="541" text-anchor="middle">
+            <tspan x="548" dy="0">Convenient, saved</tspan>
+            <tspan x="548" dy="18">me 10 minutes</tspan>
+          </text>
+
+          <!-- Comfort Zone: 270° → (350, 580) -->
+          <text class="zone-label" x="350" y="567" text-anchor="middle">
+            <tspan x="350" dy="0">Comfort</tspan>
+            <tspan x="350" dy="26">Zone</tspan>
+          </text>
+          <text class="zone-sublabel" x="350" y="623" text-anchor="middle">
+            <tspan x="350" dy="0">Productive, losing the</tspan>
+            <tspan x="350" dy="18">ability to think for myself</tspan>
+          </text>
+
+          <!-- Waste of Time: 225° → (152, 498) -->
+          <text class="zone-label" x="152" y="485" text-anchor="middle">
+            <tspan x="152" dy="0">Waste of</tspan>
+            <tspan x="152" dy="26">Time</tspan>
+          </text>
+          <text class="zone-sublabel" x="152" y="541" text-anchor="middle">
+            <tspan x="152" dy="0">Apathy, it can't</tspan>
+            <tspan x="152" dy="18">even do this?!</tspan>
+          </text>
+
+          <!-- Stuck Spinning: 180° → (70, 300) -->
+          <text class="zone-label" x="70" y="287" text-anchor="middle">
+            <tspan x="70" dy="0">Stuck</tspan>
+            <tspan x="70" dy="26">Spinning</tspan>
+          </text>
+          <text class="zone-sublabel" x="70" y="343" text-anchor="middle">
+            <tspan x="70" dy="0">Confused, why</tspan>
+            <tspan x="70" dy="18">isn't this working</tspan>
+          </text>
+
+          <!-- Surprisingly Poor: 135° → (152, 102) -->
+          <text class="zone-label" x="152" y="89" text-anchor="middle">
+            <tspan x="152" dy="0">Surprisingly</tspan>
+            <tspan x="152" dy="26">Poor</tspan>
+          </text>
+          <text class="zone-sublabel" x="152" y="145" text-anchor="middle">
+            <tspan x="152" dy="0">Annoyed, should've</tspan>
+            <tspan x="152" dy="18">just done it myself</tspan>
+          </text>
+
+
+          <!-- Dots container -->
+          <g id="dotsContainer"></g>
+          <circle id="loadingDot" r="8" fill="#CC4400" opacity="0" style="display:none"/>
+        </svg>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Zone hover card -->
+  <div class="zone-card" id="zoneCard" style="display:none" role="tooltip">
+    <div class="zone-card-header">
+      <span class="zone-card-name" id="zoneCardName"></span>
+    </div>
+    <p class="zone-card-oneliner" id="zoneCardOneliner"></p>
+    <p class="zone-card-desc" id="zoneCardDesc"></p>
+    <p class="zone-card-example" id="zoneCardExample"></p>
+  </div>
+
+  <!-- Dot tooltip -->
+  <div class="dot-tooltip" id="dotTooltip" style="display:none"></div>
+
+  <!-- Info Modal -->
+  <div class="modal-overlay" id="modalOverlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-titlebar">
+        <span class="modal-title" id="modalTitle">HOW THE AI FLOW FRAMEWORK WORKS</span>
+        <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+      </div>
+      <div class="modal-body">
+        <h2>How the AI Flow Framework Works</h2>
+        <p>In the 1970s, psychologist Mihaly Csikszentmihalyi identified Flow: the state where you're so absorbed in a task that everything else disappears. It happens when the complexity of a challenge aligns with your ability to meet it.</p>
+        <p>This tool applies that principle to working with AI. One axis measures AI Capability, the other measures Task Complexity. The combination places your task in one of 8 zones, from AI Flow to Waste of Time.</p>
+
+        <h2>AI Capability (horizontal axis)</h2>
+        <p>How good is AI at this type of task right now? Scored across 8 categories using benchmark data from 2025-26:</p>
+        <ul>
+          <li>Coding and scripting</li>
+          <li>Summarization and extraction</li>
+          <li>Research and synthesis</li>
+          <li>Data analysis</li>
+          <li>Writing in a specific voice</li>
+          <li>Presentation design</li>
+          <li>Strategic judgment</li>
+          <li>Spatial and physical reasoning</li>
+        </ul>
+
+        <h2>Task Complexity (vertical axis)</h2>
+        <p>How much human judgment does this task require? Assessed across five factors:</p>
+        <ul>
+          <li>How many judgment calls are involved</li>
+          <li>Stakeholder impact and stakes</li>
+          <li>Interdependencies with other systems or people</li>
+          <li>Domain expertise and context required</li>
+          <li>Novelty (have you done this before?)</li>
+        </ul>
+        <p>The more specific you are about your task, the more accurate the placement.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loadingOverlay" style="display:none">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text" id="loadingText">Evaluating...</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
