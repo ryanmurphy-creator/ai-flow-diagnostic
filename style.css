@@ -767,10 +767,6 @@ body {
     gap: 16px;
   }
 
-  .intro-text {
-    font-size: 16px !important;
-    line-height: 1.6;
-  }
 
   /* Input window: not draggable, full width, fixed in flow */
   .window {
@@ -792,23 +788,19 @@ body {
     box-shadow: 3px 3px 0px 0px #EE4413;
   }
 
-  /* Zone labels: scaled up for mobile readability.
-     SVG viewBox is ~1160 units wide; at 390px screen that's ~0.34x scale.
-     To render at ~22px on screen: 22/0.34 = ~65px SVG units.
-     To render at ~14px on screen: 14/0.34 = ~41px SVG units.
-     To render at ~12px on screen: 12/0.34 = ~35px SVG units. */
+  /* Zone labels */
   .zone-label {
-    font-size: 65px !important;
+    font-size: 24px !important;
     font-weight: 700 !important;
   }
 
   .zone-sublabel {
-    font-size: 41px !important;
+    font-size: 15px !important;
   }
 
   /* Axis labels (HIGH/LOW COMPLEXITY etc.) */
   #axisLayer text {
-    font-size: 35px !important;
+    font-size: 14px !important;
   }
 
   /* Zone hover card on mobile: full centered modal overlay */
