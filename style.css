@@ -43,6 +43,8 @@ body {
   background: white;
   box-shadow: 5px 5px 0px 0px #EE4413;
   margin: 20px 20px 0 20px;
+  position: relative;
+  z-index: 10;
 }
 
 .site-title {
