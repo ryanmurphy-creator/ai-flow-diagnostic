@@ -56,6 +56,37 @@ Be direct, specific, and honest. Don't sugarcoat. The user wants a real assessme
 
 STRICT FORMATTING RULE: Never use em dashes (— or --) anywhere in your response. Use commas, periods, or colons instead.`;
 
+const PRIMARY_MODEL = 'claude-sonnet-4-6';
+const FALLBACK_MODEL = 'claude-haiku-4-5-20251001';
+const PRIMARY_RETRIES = 3;
+
+// Calls the Anthropic API with the given model. Returns { ok, status, data }.
+async function callClaude(model, task, apiKey) {
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01'
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: 512,
+      system: SYSTEM_PROMPT,
+      messages: [
+        {
+          role: 'user',
+          content: `Evaluate this task against the AI Flow Framework:\n\n"${task.trim()}"`
+        }
+      ]
+    }),
+    signal: AbortSignal.timeout(20000)
+  });
+
+  const data = await response.json().catch(() => ({}));
+  return { ok: response.ok, status: response.status, data };
+}
+
 export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -86,35 +117,41 @@ export default async function handler(req, res) {
   }
 
   try {
-    const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 512,
-        system: SYSTEM_PROMPT,
-        messages: [
-          {
-            role: 'user',
-            content: `Evaluate this task against the AI Flow Framework:\n\n"${task.trim()}"`
-          }
-        ]
-      }),
-      signal: AbortSignal.timeout(20000)
-    });
+    let result = null;
 
-    if (!anthropicRes.ok) {
-      const errData = await anthropicRes.json().catch(() => ({}));
-      console.error('Anthropic API error:', errData);
-      return res.status(502).json({ error: 'AI evaluation failed. Please try again.' });
+    // Try primary model up to PRIMARY_RETRIES times, stopping early on non-529 errors
+    for (let attempt = 1; attempt <= PRIMARY_RETRIES; attempt++) {
+      const { ok, status, data } = await callClaude(PRIMARY_MODEL, task, apiKey);
+
+      if (ok) {
+        result = data;
+        break;
+      }
+
+      console.error(`Primary model attempt ${attempt} failed — status ${status}:`, data);
+
+      // Only retry on 529 overloaded; any other error fails immediately
+      if (status !== 529) {
+        return res.status(502).json({ error: 'AI evaluation failed. Please try again.' });
+      }
+
+      // 529: if retries remain, loop again; otherwise fall through to fallback
     }
 
-    const data = await anthropicRes.json();
-    const rawContent = data.content?.[0]?.text || '';
+    // If primary model exhausted all retries with 529, try fallback model once
+    if (!result) {
+      console.log('Primary model overloaded after retries — trying fallback model');
+      const { ok, status, data } = await callClaude(FALLBACK_MODEL, task, apiKey);
+
+      if (!ok) {
+        console.error(`Fallback model failed — status ${status}:`, data);
+        return res.status(502).json({ error: 'AI evaluation failed. Please try again.' });
+      }
+
+      result = data;
+    }
+
+    const rawContent = result.content?.[0]?.text || '';
 
     // Parse JSON from response
     let parsed;
