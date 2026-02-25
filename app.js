@@ -5,42 +5,42 @@
 // --- Zone Content Data ---
 const ZONE_DATA = {
   'AI Flow': {
-    oneliner: 'Absorbed: Creative Partnership',
+    oneliner: 'Absorbed: Creative partnership',
     desc: "You're solving a genuinely hard problem and the AI is a genuinely capable partner. You're directing, deciding, course-correcting. The AI is handling the parts you couldn't do alone. Time disappears.",
     example: '<strong>Examples:</strong> Building a custom internal tool that connects multiple APIs. Prototyping an MVP web app to test an idea.'
   },
   'Jagged Frontier': {
-    oneliner: 'Excited: Will This Actually Work?',
+    oneliner: 'Excited: Will this actually work?',
     desc: "You're at the edge of what AI can do. It almost gets it, then surprises you. A lot of vibe coding lives here. It can tip into flow or into frustration depending on what you're doing.",
     example: '<strong>Examples:</strong> Writing and iterating on a full grant proposal. Building a complex interactive data dashboard. Analyzing a messy dataset before a board presentation.'
   },
   'False Promise': {
-    oneliner: "Annoyed: Should've Just Done It Myself",
+    oneliner: "Annoyed: Should've just done it myself",
     desc: "You expected the AI to handle the task. It didn't. You've spent two hours getting worse output than you could have produced on your own in forty minutes.",
     example: '<strong>Examples:</strong> Designing an investor pitch deck. Writing a keynote speech in your voice for a major conference. Creating a brand identity system for a new product.'
   },
   'Stuck Spinning': {
-    oneliner: "Confused: Why Isn't This Working?",
+    oneliner: "Confused: Why isn't this working?",
     desc: "The AI keeps almost getting it. You're re-prompting, tweaking, trying different angles. It seems like it should be able to do this. But you've been going in circles and you're no closer than when you started.",
     example: '<strong>Examples:</strong> Maintaining a consistent editorial voice across a content series. Building a financial model with interdependent assumptions. Getting AI to design your app\'s UI/UX flow.'
   },
   'Waste of Time': {
-    oneliner: "It Can't Even Do This?!",
+    oneliner: "Apathetic: It can't even do this?!",
     desc: "The task is simple, but it requires access to live systems, real permissions, or other people's data. AI can talk about doing it but can't actually do it.",
     example: '<strong>Examples:</strong> Checking whether a product is in stock with your supplier. Scheduling a meeting across five busy calendars. Filing an expense report in your company\'s system.'
   },
   'Comfort Zone': {
-    oneliner: "Productive: But Am I Even Thinking Anymore?",
+    oneliner: "Productive: But am I even thinking anymore?",
     desc: "The AI handles everything. You press accept. It's efficient. But you're not engaged, and over time you start to wonder if you're outsourcing the thinking that used to make you good at your job.",
     example: '<strong>Examples:</strong> Having AI draft all your Slack messages. Auto-summarizing a document before you read it. Generating social media content on a weekly schedule.'
   },
   'Easy Wins': {
-    oneliner: "Convenient: Saved Me Ten Minutes",
+    oneliner: "Convenient: Saved me ten minutes",
     desc: "Formatting a doc, summarizing an article. Nothing wrong with it. Useful. But not where growth happens.",
     example: '<strong>Examples:</strong> Reformatting a CSV and cleaning column names. Translating a client email for a quick internal share. Generating boilerplate compliance language a lawyer will review anyway.'
   },
   'Cruise Mode': {
-    oneliner: "Useful: Running on Autopilot",
+    oneliner: "Useful: Running on autopilot",
     desc: "You've got your prompt patterns dialed. The AI executes flawlessly. You're comfortable, but coasting.",
     example: '<strong>Examples:</strong> Running the same weekly competitive intelligence report. Generating every blog post draft with the same structure. Automated code review on routine pull requests.'
   }
