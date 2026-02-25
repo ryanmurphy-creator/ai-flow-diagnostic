@@ -33,7 +33,7 @@ The framework maps tasks on two dimensions:
 Map capability and complexity scores to zones:
 - AI Flow: capability 7-10, complexity 7-10 — absorbed, creative partnership
 - Jagged Frontier: capability 5-7, complexity 7-10 — exciting, unpredictable, vibe coding territory
-- Surprisingly Poor: capability 1-4, complexity 6-10 — annoyed, should've done it myself
+- False Promise: capability 1-4, complexity 6-10 — annoyed, should've done it myself
 - Stuck Spinning: capability 1-4, complexity 4-6 — confused, this should be working
 - Waste of Time: capability 1-4, complexity 1-4 — defeated, it can't even do this
 - Comfort Zone: capability 4-7, complexity 1-4 — productive but losing critical thinking
@@ -50,7 +50,7 @@ You MUST respond with valid JSON only, no other text. Use exactly this structure
   "advice": "1-2 sentence practical suggestion for how to approach this task given where it lands."
 }
 
-Zone name must be exactly one of: "AI Flow", "Jagged Frontier", "Surprisingly Poor", "Stuck Spinning", "Waste of Time", "Comfort Zone", "Easy Wins", "Cruise Mode"
+Zone name must be exactly one of: "AI Flow", "Jagged Frontier", "False Promise", "Stuck Spinning", "Waste of Time", "Comfort Zone", "Easy Wins", "Cruise Mode"
 
 Be direct, specific, and honest. Don't sugarcoat. The user wants a real assessment.
 
@@ -128,7 +128,7 @@ export default async function handler(req, res) {
     }
 
     // Validate zone name
-    const validZones = ['AI Flow', 'Jagged Frontier', 'Surprisingly Poor', 'Stuck Spinning', 'Waste of Time', 'Comfort Zone', 'Easy Wins', 'Cruise Mode'];
+    const validZones = ['AI Flow', 'Jagged Frontier', 'False Promise', 'Stuck Spinning', 'Waste of Time', 'Comfort Zone', 'Easy Wins', 'Cruise Mode'];
     if (!validZones.includes(parsed.zone)) {
       console.error('Invalid zone in response:', parsed.zone);
       return res.status(500).json({ error: 'Evaluation returned an invalid zone. Please try again.' });

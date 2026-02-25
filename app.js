@@ -6,43 +6,43 @@
 const ZONE_DATA = {
   'AI Flow': {
     oneliner: 'absorbed, creative partnership',
-    desc: "The task is genuinely complex and the AI is genuinely capable of helping. You're not delegating, you're collaborating. You make the judgment calls, the AI handles execution, and together you build something neither of you could have made alone. Time disappears.",
-    example: '<strong>Examples:</strong> Building a custom internal tool that connects multiple APIs. Analyzing a messy dataset to find patterns before a board presentation. Prototyping an MVP web app to test a product idea.'
+    desc: "You're solving a genuinely hard problem and the AI is a genuinely capable partner. You're directing, deciding, course-correcting. The AI is handling the parts you couldn't do alone. Time disappears.",
+    example: '<strong>Examples:</strong> Building a custom internal tool that connects multiple APIs. Prototyping an MVP web app to test an idea.'
   },
   'Jagged Frontier': {
     oneliner: 'excited, will this actually work?',
-    desc: "You're pushing into territory where the AI is almost capable but not quite reliable. It surprises you, sometimes brilliantly, sometimes badly. This is the edge Ethan Mollick describes: AI capability isn't a clean line, it's jagged. A lot of vibe coding lives here.",
-    example: '<strong>Examples:</strong> Writing and iterating on a full grant proposal. Building a complex interactive data dashboard. Creating a full-stack app with real-time features.'
+    desc: "You're at the edge of what AI can do. It almost gets it, then surprises you. A lot of vibe coding lives here. It can tip into flow or into frustration depending on what you're doing.",
+    example: '<strong>Examples:</strong> Writing and iterating on a full grant proposal. Building a complex interactive data dashboard. Analyzing a messy dataset before a board presentation.'
   },
-  'Surprisingly Poor': {
+  'False Promise': {
     oneliner: "annoyed, should've just done it myself",
-    desc: "You expected the AI to handle this. It seemed like it should be good at it. But the output keeps missing, and you've now spent more time prompting and fixing than it would have taken to just do it yourself.",
+    desc: "You expected the AI to handle the task. It didn't. You've spent two hours getting worse output than you could have produced on your own in forty minutes.",
     example: '<strong>Examples:</strong> Designing an investor pitch deck. Writing a keynote speech in your voice for a major conference. Creating a brand identity system for a new product.'
   },
   'Stuck Spinning': {
-    oneliner: "confused, this should be working by now",
-    desc: 'The AI is close. Every output is almost right. So you keep going, reprompting, tweaking, trying different angles. But the gap between "almost" and "actually useful" turns out to be enormous. You\'ve invested enough time that quitting feels wasteful, but continuing isn\'t helping.',
+    oneliner: "confused, why isn't this working?",
+    desc: "The AI keeps almost getting it. You're re-prompting, tweaking, trying different angles. It seems like it should be able to do this. But you've been going in circles and you're no closer than when you started.",
     example: '<strong>Examples:</strong> Maintaining a consistent editorial voice across a content series. Building a financial model with interdependent assumptions. Getting AI to design your app\'s UI/UX flow.'
   },
   'Waste of Time': {
-    oneliner: "defeated, it can't even do this?",
-    desc: "The task is simple. The AI should handle it. And it just can't. These are tasks that require access to live systems, real permissions, or other people's data. AI can talk about doing them but can't actually do them.",
-    example: '<strong>Examples:</strong> Checking whether a specific product is in stock with your supplier. Scheduling a meeting across five people with different calendar constraints. Filing an expense report in your company\'s system.'
+    oneliner: "it can't even do this?!",
+    desc: "The task is simple, but it requires access to live systems, real permissions, or other people's data. AI can talk about doing it but can't actually do it.",
+    example: '<strong>Examples:</strong> Checking whether a product is in stock with your supplier. Scheduling a meeting across five busy calendars. Filing an expense report in your company\'s system.'
   },
   'Comfort Zone': {
     oneliner: "productive, but am I even thinking anymore?",
-    desc: "The AI handles this perfectly. Every time. You barely review the output before hitting accept. It's efficient, but you're not engaged. Over time, the skills you used to exercise are getting softer.",
-    example: '<strong>Examples:</strong> Having AI draft all your Slack messages and email replies. Auto-summarizing every document before you read it. Generating social media content on a weekly schedule.'
+    desc: "The AI handles everything. You press accept. It's efficient. But you're not engaged, and over time you start to wonder if you're outsourcing the thinking that used to make you good at your job.",
+    example: '<strong>Examples:</strong> Having AI draft all your Slack messages. Auto-summarizing a document before you read it. Generating social media content on a weekly schedule.'
   },
   'Easy Wins': {
     oneliner: "convenient, saved me ten minutes",
-    desc: "Simple task, capable AI, no drama. You asked it to do something straightforward and it did it. Genuinely useful. And you'll forget about it by tomorrow.",
+    desc: "Formatting a doc, summarizing an article. Nothing wrong with it. Useful. But not where growth happens.",
     example: '<strong>Examples:</strong> Reformatting a CSV and cleaning column names. Translating a client email for a quick internal share. Generating boilerplate compliance language a lawyer will review anyway.'
   },
   'Cruise Mode': {
-    oneliner: "comfortable, running on autopilot",
-    desc: "You know the prompt patterns, you know what the AI will produce, and you get a solid result every time. The risk: you stay here because it feels good. You're not failing, but you're not growing either. The flow zone is one level up.",
-    example: '<strong>Examples:</strong> Running the same weekly competitive intelligence report through your established prompts. Generating every blog post draft with the same structure. Automated code review on routine pull requests.'
+    oneliner: "useful, running on autopilot",
+    desc: "You've got your prompt patterns dialed. The AI executes flawlessly. You're comfortable, but coasting.",
+    example: '<strong>Examples:</strong> Running the same weekly competitive intelligence report. Generating every blog post draft with the same structure. Automated code review on routine pull requests.'
   }
 };
 
@@ -61,7 +61,7 @@ const ZONE_DOT_POSITIONS = {
   'Cruise Mode':        sp(0),
   'AI Flow':            sp(45),
   'Jagged Frontier':    sp(90),
-  'Surprisingly Poor':  sp(135),
+  'False Promise':  sp(135),
   'Stuck Spinning':     sp(180),
   'Waste of Time':      sp(225),
   'Comfort Zone':       sp(270),
@@ -357,7 +357,7 @@ function getStackedDotPosition(zoneName) {
   // Nudge angle: ±18° steps along the arc, alternating left/right
   const midAngleDeg = {
     'Cruise Mode': 0, 'AI Flow': 45, 'Jagged Frontier': 90,
-    'Surprisingly Poor': 135, 'Stuck Spinning': 180, 'Waste of Time': 225,
+    'False Promise': 135, 'Stuck Spinning': 180, 'Waste of Time': 225,
     'Comfort Zone': 270, 'Easy Wins': 315
   }[zoneName] ?? 0;
 
@@ -488,7 +488,7 @@ function capabilityComplexityToZone(capability, complexity) {
   // Map scores to zone name (fallback, API should provide zone)
   if (capability >= 7 && complexity >= 7) return 'AI Flow';
   if (capability >= 5 && complexity >= 7) return 'Jagged Frontier';
-  if (capability < 5 && complexity >= 7) return 'Surprisingly Poor';
+  if (capability < 5 && complexity >= 7) return 'False Promise';
   if (capability < 5 && complexity >= 4) return 'Stuck Spinning';
   if (capability < 5 && complexity < 4) return 'Waste of Time';
   if (capability >= 4 && capability < 7 && complexity < 4) return 'Comfort Zone';
