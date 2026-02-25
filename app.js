@@ -276,7 +276,7 @@ async function handleSubmit() {
     showResult(result);
   } catch (err) {
     showLoading(false);
-    showError(err.message || 'Something went wrong. Please try again.');
+    showError("Anthropic's AI servers are currently overloaded. Try again in a few minutes.");
   } finally {
     submitBtn.disabled = false;
   }
@@ -292,7 +292,7 @@ async function evaluateTask(task) {
 
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
-    throw new Error(data.error || `Request failed (${res.status})`);
+    throw new Error("Anthropic's AI servers are currently overloaded. Try again in a few minutes.");
   }
 
   return res.json();
