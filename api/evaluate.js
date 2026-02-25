@@ -58,7 +58,7 @@ STRICT FORMATTING RULE: Never use em dashes (— or --) anywhere in your respons
 
 const PRIMARY_MODEL = 'claude-sonnet-4-6';
 const FALLBACK_MODEL = 'claude-haiku-4-5-20251001';
-const PRIMARY_RETRIES = 3;
+const PRIMARY_RETRIES = 1;
 
 // Calls the Anthropic API with the given model. Returns { ok, status, data }.
 async function callClaude(model, task, apiKey) {
